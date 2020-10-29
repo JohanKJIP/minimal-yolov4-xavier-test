@@ -1,5 +1,6 @@
 import os
 import shutil
+import cv2
 
 """
 # Rename files and place them into a single directory
@@ -32,8 +33,9 @@ validation_split = 0.10
 
 # Convert annotations and split into validation and train set
 number_images = len(os.listdir(image_folder))
-train_size = int(number_images * (1 - validation_split))
-val_size = number_images - train_size
+max_samples = 200
+train_size = int(max_samples * (1 - validation_split))
+val_size = max_samples - train_size
 
 print(f'Training dataset size: {train_size}')
 print(f'Validation dataset size: {val_size}')
@@ -50,12 +52,33 @@ with open('train.txt', 'w') as train_file, open('val.txt', 'w') as val_file:
             for line in label_file:
                 line = line.split(' ')
                 line[-1] = line[-1].rstrip()
-                x2 = float(line[1]) + float(line[3])
-                y2 = float(line[2]) + float(line[4])
-                file_to_write.write(f' {line[1]},{line[2]},{x2},{y2},{line[0]}')
+
+                img = cv2.imread(f'{image_folder}/{file_name}')
+                img_height = img.shape[0]
+                img_width = img.shape[1]
+                
+                x = float(line[1]) * img_width
+                y = float(line[2]) * img_height
+                w = float(line[3]) * img_width
+                h = float(line[4]) * img_height
+
+                xmin = x - w/2
+                ymin = y - h/2
+                xmax = x + w/2
+                ymax = y + h/2
+
+                """
+                x1 = float(line[1]) * img_width
+                y1 = float(line[2]) * img_height
+                x2 = x1 + float(line[3]) * img_width
+                y2 = y1 + float(line[4]) * img_height
+                """
+                file_to_write.write(f' {xmin},{ymin},{xmax},{ymax},{line[0]}')
         file_to_write.write('\n') 
         print(count)
         count += 1
+        if count > max_samples:
+            break
 
 if __name__ == "__main__":
     pass
