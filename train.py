@@ -417,11 +417,13 @@ def train(model, device, config, epochs=5, batch_size=1, save_cp=True, log_step=
             else:
                 eval_model = Yolov4(cfg.pretrained, n_classes=cfg.classes, inference=True)
             # eval_model = Yolov4(yolov4conv137weight=None, n_classes=config.classes, inference=True)
+            """
             if torch.cuda.device_count() > 1:
                 eval_model.load_state_dict(model.module.state_dict())
             else:
                 eval_model.load_state_dict(model.state_dict())
             eval_model.to(device)
+        
             evaluator = evaluate(eval_model, val_loader, config, device)
             del eval_model
 
@@ -438,7 +440,7 @@ def train(model, device, config, epochs=5, batch_size=1, save_cp=True, log_step=
             writer.add_scalar('train/AR_small', stats[9], global_step)
             writer.add_scalar('train/AR_medium', stats[10], global_step)
             writer.add_scalar('train/AR_large', stats[11], global_step)
-
+            """
             if save_cp:
                 try:
                     # os.mkdir(config.checkpoints)
