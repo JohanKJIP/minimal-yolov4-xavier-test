@@ -131,15 +131,7 @@ def main(engine_path, image_path, image_size):
                             # Because the first iteration is usually longer
             boxes = detect(context, buffers, image_src, image_size, num_classes)
 
-        if num_classes == 20:
-            namesfile = 'data/voc.names'
-        elif num_classes == 80:
-            namesfile = 'data/coco.names'
-        else:
-            namesfile = 'data/names'
-
-        class_names = load_class_names(namesfile)
-        plot_boxes_cv2(image_src, boxes[0], savename='predictions_trt.jpg', class_names=class_names)
+        plot_boxes_cv2(image_src, boxes[0], savename='predictions_trt.jpg', class_names=['blue', 'yellow', 'orange-big', 'orange-small'])
 
 
 def get_engine(engine_path):
@@ -173,7 +165,7 @@ def detect(context, buffers, image_src, image_size, num_classes):
     print('Len of outputs: ', len(trt_outputs))
 
     trt_outputs[0] = trt_outputs[0].reshape(1, -1, 1, 4)
-    trt_outputs[1] = trt_outputs[1].reshape(1, -1, num_classes)
+    trt_outputs[1] = trt_outputs[1].reshape(1, -1, 4)
 
     tb = time.time()
 

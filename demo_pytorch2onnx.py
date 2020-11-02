@@ -69,16 +69,17 @@ def main(weight_file, image_path, batch_size, n_classes, IN_IMAGE_H, IN_IMAGE_W)
         onnx_path_demo = transform_to_onnx(weight_file, batch_size, n_classes, IN_IMAGE_H, IN_IMAGE_W)
     else:
         # Transform to onnx as specified batch size
-        transform_to_onnx(weight_file, batch_size, n_classes, IN_IMAGE_H, IN_IMAGE_W)
+        print(transform_to_onnx(weight_file, batch_size, n_classes, IN_IMAGE_H, IN_IMAGE_W))
         # Transform to onnx for demo
-        onnx_path_demo = transform_to_onnx(weight_file, 1, n_classes, IN_IMAGE_H, IN_IMAGE_W)
+        #onnx_path_demo = transform_to_onnx(weight_file, 1, n_classes, IN_IMAGE_H, IN_IMAGE_W)
 
-    session = onnxruntime.InferenceSession(onnx_path_demo)
+    print('Finished converting')
+    #session = onnxruntime.InferenceSession(onnx_path_demo)
     # session = onnx.load(onnx_path)
-    print("The model expects input shape: ", session.get_inputs()[0].shape)
+    #print("The model expects input shape: ", session.get_inputs()[0].shape)
 
-    image_src = cv2.imread(image_path)
-    detect(session, image_src)
+    #image_src = cv2.imread(image_path)
+    #detect(session, image_src)
 
 
 

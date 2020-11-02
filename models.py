@@ -473,12 +473,12 @@ if __name__ == "__main__":
 
     model = Yolov4(yolov4conv137weight=None, n_classes=n_classes, inference=True)
 
-    model.load_state_dict(torch.load(weightfile))
+    model.load_state_dict(torch.load(weightfile, map_location=torch.device('cpu')))
     # use cuda
-    device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
 
-    use_cuda = False
+    use_cuda = True
     if use_cuda:
         model.cuda()
 
