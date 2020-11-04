@@ -6,7 +6,7 @@ import tensorrt as trt
 # logger to capture errors, warnings, and other information during the build and inference phases
 TRT_LOGGER = trt.Logger()
 
-def build_engine(onnx_file_path):
+def build_engine(onnx_file_path, trt_engine_path):
     # initialize TensorRT engine and parse ONNX model
     network_creation_flag = 1 << int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
     
@@ -44,14 +44,15 @@ def build_engine(onnx_file_path):
     print("Completed creating Engine")
 
     # save engine to file
-    with open('test.trt', 'wb') as f:
+    with open(trt_engine_path, 'wb') as f:
         f.write(engine.serialize())
 
     return engine, context
 
 def main():
     onnx_file_path = 'yolov4_1_3_416_416_static.onnx'
-    engine, context = build_engine(onnx_file_path)
+    trt_engine_path = 'yolov4.trt'
+    engine, context = build_engine(onnx_file_path, trt_engine_path)
 
 if __name__ == "__main__":
     main()
