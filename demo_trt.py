@@ -154,7 +154,6 @@ def detect(context, buffers, image_src, image_size, num_classes):
     img_in /= 255.0
     img_in = np.ascontiguousarray(img_in)
     print("Shape of the network input: ", img_in.shape)
-    # print(img_in)
 
     inputs, outputs, bindings, stream = buffers
     print('Length of inputs: ', len(inputs))
